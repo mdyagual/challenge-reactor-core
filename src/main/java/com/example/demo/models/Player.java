@@ -96,4 +96,13 @@ public class Player {
     public void setClub(String club) {
         this.club = club;
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", national='" + national + '\'' +
+                ", club='" + club + '\'' +
+                '}';
+    }
 }
