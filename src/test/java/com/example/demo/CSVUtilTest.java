@@ -59,7 +59,7 @@ public class CSVUtilTest {
     @Test
     void reactive_filtrarJugadoresMayoresA34EnClub(){
 
-        String club = "Real Madrid";
+        String club = "FC Tokyo";
         List<Player> list = CsvUtilFile.getPlayers();
         Flux<Player> listFlux = Flux.fromStream(list.parallelStream()).cache();
         Mono<Map<Integer, Collection<Player>>> listFilter = listFlux
