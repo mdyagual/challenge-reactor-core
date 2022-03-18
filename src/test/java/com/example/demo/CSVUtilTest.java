@@ -60,33 +60,33 @@ public class CSVUtilTest {
     void reactive_filtrarJugadoresMayoresA34EnClub(){
 
         String club = "FC Tokyo";
-        List<Player> list = CsvUtilFile.getPlayers();
-        Flux<Player> listFlux = Flux.fromStream(list.parallelStream()).cache();
-        Mono<Map<Integer, Collection<Player>>> listFilter = listFlux
+        List<Player> jugadores = CsvUtilFile.getPlayers();
+        Flux<Player> listFlux = Flux.fromStream(jugadores.parallelStream()).cache();
+        Mono<Map<Integer, Collection<Player>>> filtrado = listFlux
                 .filter(player -> player.age > 34 && player.club.equals(club))
                 .distinct()
                 .collectMultimap(Player::getAge);
 
-        System.out.println(listFilter.block().size());
-        listFilter.block().forEach((key, values) -> values.forEach(p -> System.out.println(p)));
-        assert listFilter.block().size() == 1;
+        System.out.println(filtrado.block().size());
+        filtrado.block().forEach((key, values) -> values.forEach(p -> System.out.println(p)));
+        assert filtrado.block().size() == 1;
     }
 
     @Test
     void reactive_filtrarJugadoresNacionalidadRanking(){
-        List<Player> list = CsvUtilFile.getPlayers();
-        Flux<Player> fluxList = Flux.fromStream(list.parallelStream()).cache();
-        Mono<Map<String, Collection<Player>>> sortedList = fluxList
-                .sort((player1, player2) -> {
-                    return player1.getWinners() > player2.getWinners() ?
-                            player1.getWinners() : player2.getWinners();
+        List<Player> jugadores = CsvUtilFile.getPlayers();
+        Flux<Player> fluxList = Flux.fromStream(jugadores.parallelStream()).cache();
+        Mono<Map<String, Collection<Player>>> ordenNac = fluxList
+                .sort((p1, p2) -> {
+                    return p1.getWinners() > p2.getWinners() ?
+                            p1.getWinners() : p2.getWinners();
                 })
                 .distinct()
                 .collectMultimap(Player::getNational);
 
-        sortedList.block().forEach((key, values) -> System.out.println(key));
+        ordenNac.block().forEach((key, values) -> System.out.println(key));
 
-        assert sortedList.block().size() == 164;
+        assert ordenNac.block().size() == 164;
     }
 
 
